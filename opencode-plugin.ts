@@ -78,13 +78,23 @@ async function notify(title: string, message: string) {
   }
 }
 
-console.log("[desktop-notifications] Plugin loaded")
-
-export const DesktopNotificationsPlugin: Plugin = async () => {
-  console.log("[desktop-notifications] Plugin initialized")
+export const DesktopNotificationsPlugin: Plugin = async ({ client }) => {
+  await client.app.log({
+    body: {
+      service: "desktop-notifications",
+      level: "info",
+      message: "Plugin initialized",
+    },
+  })
   return {
     event: async ({ event }) => {
-      console.log("[desktop-notifications] event:", event.type)
+      await client.app.log({
+        body: {
+          service: "desktop-notifications",
+          level: "info",
+          message: `Event received: ${event.type}`,
+        },
+      })
       switch (event.type) {
         case "session.error":
           await notify("OpenCode Error", basename(process.cwd()))

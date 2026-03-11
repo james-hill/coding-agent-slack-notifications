@@ -61,10 +61,11 @@ async function getLastAssistantMessage(client: any, sessionId: string): Promise<
     const messages = response.data ?? response
     for (let i = messages.length - 1; i >= 0; i--) {
       const msg = messages[i]
-      if (msg.role !== "assistant") continue
+      const role = msg.role ?? msg.info?.role
+      if (role !== "assistant") continue
       const textParts = (msg.parts ?? []).filter((p: any) => p.type === "text")
       if (textParts.length > 0) {
-        return textParts.map((p: any) => p.text ?? "").join("\n").trim()
+        return textParts.map((p: any) => p.text ?? p.content ?? "").join("\n").trim()
       }
     }
   } catch (err) {

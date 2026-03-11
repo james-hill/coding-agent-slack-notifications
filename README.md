@@ -6,7 +6,7 @@ Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code) and [Op
 
 ## Prerequisites
 
-A [Slack incoming webhook URL](https://api.slack.com/messaging/webhooks). Create one in your Slack workspace settings.
+A [Slack incoming webhook URL](https://api.slack.com/messaging/webhooks). See [Adding a Slack App With Inbound Webhooks](#appendix-adding-a-slack-app-with-inbound-webhooks) below if you don't have one yet.
 
 ## Installation
 
@@ -38,7 +38,7 @@ Both installers copy `notify.yaml.template` to `~/.config/slack-notifications/no
 The easiest way to configure is with the `/notify-config` slash command from within your agent session:
 
 ```
-/notify-config webhook_url https://hooks.slack.com/services/YOUR/WEBHOOK/URL
+/notify-config webhook_url https://hooks.slack.com/services/<YOUR-WEBHOOK-URL>
 /notify-config debounce_seconds 5
 /notify-config                   # show current values
 ```
@@ -47,7 +47,7 @@ You can also edit `~/.config/slack-notifications/notify.yaml` directly:
 
 ```yaml
 enabled: true
-webhook_url: https://hooks.slack.com/services/YOUR/WEBHOOK/URL
+webhook_url: https://hooks.slack.com/services/<YOUR-WEBHOOK-URL>
 debounce_seconds: 10
 ```
 
@@ -85,3 +85,52 @@ These are installed automatically and available inside your agent session:
 | `opencode-plugin.ts` | OpenCode plugin (TypeScript) |
 | `install-opencode.sh` | Installer for OpenCode plugin |
 | `commands/` | Slash command definitions installed for agent use |
+
+---
+
+## Appendix: Adding a Slack App With Inbound Webhooks
+
+### Step 1: Create a private Slack channel
+
+- Open Slack and click the **+** icon next to **Channels** in the left sidebar
+- Select **Create a new channel**
+- Name it `opencode-yourname` (replace `yourname` with your actual name)
+- Set the channel to **Private**
+- Click **Create**
+
+### Step 2: Create a Slack app and configure incoming webhooks
+
+- Go to [https://api.slack.com/apps](https://api.slack.com/apps)
+- Click **Create New App**
+- Select **From scratch**
+- Give your app a name (e.g., "OpenCode Notifications")
+- Select your workspace from the dropdown
+- Click **Create App**
+- In the left sidebar, click **Incoming Webhooks**
+- Toggle **Activate Incoming Webhooks** to **On**
+- Click **Add New Webhook to Workspace**
+- Select the channel you created earlier
+- Click **Allow**
+
+### Step 3: Get the webhook URL
+
+After allowing, you'll see a webhook URL that looks like:
+
+```
+https://hooks.slack.com/services/<YOUR-WEBHOOK-URL>
+```
+
+Copy this URL — you'll use it during configuration.
+
+### Step 4: Configure and test
+
+After installing, set your webhook URL and enable notifications from within your coding agent:
+
+```
+/notify-config webhook_url https://hooks.slack.com/services/<YOUR-WEBHOOK-URL>
+/notify-on
+```
+
+Run a simple command and wait for it to complete. You should receive a message in your Slack channel when the agent finishes.
+
+Use `/notify-on` and `/notify-off` inside your coding agent session to control notifications at any time.

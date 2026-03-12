@@ -94,7 +94,7 @@ These are installed automatically and available inside your agent session:
 
 - Open Slack and click the **+** icon next to **Channels** in the left sidebar
 - Select **Create a new channel**
-- Name it `opencode-yourname` (replace `yourname` with your actual name)
+- Name it `agent-notifications` (or similar — any name you like)
 - Set the channel to **Private**
 - Click **Create**
 
